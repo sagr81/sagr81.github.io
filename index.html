@@ -46,7 +46,7 @@
 				i:"include%EE%80%801%EE%80%80IN%EE%80%80"
 				}
             for(let [key,val] of Object.entries(param))
-                p[key.substring(1,99)]=incl[key.substring.substring(0,1)]+val;
+                p[key.substring(1,99)]=incl[key.substring(0,1)]+val;
             let out=encodeURI(JSON.stringify(p))
             return out.length>6 ? '?params=' + out  : '';
         }

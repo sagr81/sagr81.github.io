@@ -76,6 +76,7 @@
     const cookieName = cookieValue.find((row) => row.startsWith("name="))?.split("=")[1];
     const cookieParam = cookieValue.find((row) => row.startsWith("params="))?.split("=")[1];
 	if(urlName && urlName.length>3) {
+	console.log('Set url', urlName)
 		globalurl=urlName;
 	}
     if(cookieName && cookieName.length>3) {

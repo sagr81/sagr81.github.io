@@ -16,6 +16,9 @@
 
 
     <script>
+		var param={};
+		var globalurl="https://lookerstudio.google.com/embed/reporting/57a32da4-3d7c-43bf-a9a0-b87ec92f3741/page/";
+		
         function getQueryParam(param) {
             "get key in html url"
             let urlParams = new URLSearchParams(window.location.search);
@@ -34,7 +37,7 @@
             return params;
         }
 
-        var param={};
+        
         function param_gen()/**generates a param key for looker studio*/{ 
             
             let p={};
@@ -66,8 +69,12 @@
  function wait_for_cookie_changes() {  
     const cookieValue = document.cookie.split("; ");
     console.log(cookieValue)   
+	const urlName = cookieValue.find((row) => row.startsWith("lookerurl="))?.split("=")[1];
     const cookieName = cookieValue.find((row) => row.startsWith("name="))?.split("=")[1];
     const cookieParam = cookieValue.find((row) => row.startsWith("params="))?.split("=")[1];
+	if(urlName && urlName.length>3) {
+		globalurl=urlName;
+	}
     if(cookieName && cookieName.length>3) {
         cookie.textContent=cookieName +' -- ' + cookieParam;
         for(let [key,val] of Object.entries(JSON.parse(cookieParam))){
@@ -77,7 +84,7 @@
                 param[key]=val;
             }
         }
-        iframe.src = "https://lookerstudio.google.com/embed/reporting/57a32da4-3d7c-43bf-a9a0-b87ec92f3741/page/"+cookieName+param_gen()
+        iframe.src = globalurl+cookieName+param_gen()
 
         document.cookie="name=; SameSite=Lax; Secure";
 

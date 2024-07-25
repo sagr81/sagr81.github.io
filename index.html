@@ -75,7 +75,7 @@
 	document.cookie="lookerurl=; SameSite=Lax; Secure";
     const cookieName = cookieValue.find((row) => row.startsWith("name="))?.split("=")[1];
     const cookieParam = cookieValue.find((row) => row.startsWith("params="))?.split("=")[1];
-	if(urlName && urlName.length>3) {
+	if(urlName && urlName.length>5) {
 	console.log('Set url', urlName)
 		globalurl=urlName;
 	}

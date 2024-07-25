@@ -72,6 +72,7 @@
     const cookieValue = document.cookie.split("; ");
     console.log(cookieValue)   
 	const urlName = cookieValue.find((row) => row.startsWith("lookerurl="))?.split("=")[1];
+	document.cookie="lookerurl=; SameSite=Lax; Secure";
     const cookieName = cookieValue.find((row) => row.startsWith("name="))?.split("=")[1];
     const cookieParam = cookieValue.find((row) => row.startsWith("params="))?.split("=")[1];
 	if(urlName && urlName.length>3) {
@@ -89,7 +90,7 @@
         iframe.src = globalurl+cookieName+param_gen()
 
         document.cookie="name=; SameSite=Lax; Secure";
-		document.cookie="lookerurl=; SameSite=Lax; Secure";
+		
 
     }
 

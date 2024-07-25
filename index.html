@@ -1,0 +1,93 @@
+<html>
+
+<head>
+    <title>hello world app</title>
+</head>
+
+<body>
+    <div id="info">still loading</div>
+    <div id="cookie">still loading</div>
+    
+
+    <iframe id="iframe" width="100%" height="800px" frameborder="0" style="border:0" allowfullscreen
+        sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox "><base target="_parent"></iframe>
+
+      
+
+
+    <script>
+        function getQueryParam(param) {
+            "get key in html url"
+            let urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+        function getQueryParams(){
+            "collect all keys in html url starting with param"
+            let params={};
+            let param_list=(window.location.search+'&?&').split("?")[1].split("&");
+            for(let y of param_list) {
+                let tmp=y.split('=');
+                if(tmp[0].startsWith('param')){
+                    params[tmp[0].substr(5,99)]=tmp[1]
+                    }                
+            }
+            return params;
+        }
+
+        var param={};
+        function param_gen()/**generates a param key for looker studio*/{ 
+            
+            let p={};
+            const incl="include%EE%80%800%EE%80%80IN%EE%80%80";
+            for(let [key,val] of Object.entries(param))
+                p[key]=incl+val;
+            let out=encodeURI(JSON.stringify(p))
+            return out.length>6 ? '?params=' + out  : '';
+        }
+
+        window.onload = function () {
+
+            let nameValue = getQueryParam('name');
+            let params = JSON.stringify(getQueryParams());
+            info.textContent = 'ref:' + document.referrer + ' name:' +  nameValue + ' params:' + params;
+            if (nameValue === null) {
+                console.log(param_gen() )
+                iframe.src = "https://lookerstudio.google.com/embed/reporting/57a32da4-3d7c-43bf-a9a0-b87ec92f3741/page/B8S6D"+param_gen()
+                setInterval(wait_for_cookie_changes, 500);
+            } else {
+                document.cookie="name="+nameValue + "; SameSite=Lax; Secure";
+                document.cookie="params="+params + "; SameSite=Lax; Secure";
+                setTimeout(  () => {window.close()} , 1000)
+                
+            }
+        }
+
+        
+ function wait_for_cookie_changes() {  
+    const cookieValue = document.cookie.split("; ");
+    console.log(cookieValue)   
+    const cookieName = cookieValue.find((row) => row.startsWith("name="))?.split("=")[1];
+    const cookieParam = cookieValue.find((row) => row.startsWith("params="))?.split("=")[1];
+    if(cookieName && cookieName.length>3) {
+        cookie.textContent=cookieName +' -- ' + cookieParam;
+        for(let [key,val] of Object.entries(JSON.parse(cookieParam))){
+            if(val=='*') { 
+                delete param[key];
+            } else {
+                param[key]=val;
+            }
+        }
+        iframe.src = "https://lookerstudio.google.com/embed/reporting/57a32da4-3d7c-43bf-a9a0-b87ec92f3741/page/"+cookieName+param_gen()
+
+        document.cookie="name=; SameSite=Lax; Secure";
+
+    }
+
+}
+
+
+    </script>
+
+</body>
+
+</html>

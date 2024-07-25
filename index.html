@@ -51,6 +51,7 @@
         window.onload = function () {
 
             let nameValue = getQueryParam('name');
+			let lookerurl = getQueryParam('lookerurl');
             let params = JSON.stringify(getQueryParams());
             info.textContent = 'ref:' + document.referrer + ' name:' +  nameValue + ' params:' + params;
             if (nameValue === null) {
@@ -60,7 +61,8 @@
             } else {
                 document.cookie="name="+nameValue + "; SameSite=Lax; Secure";
                 document.cookie="params="+params + "; SameSite=Lax; Secure";
-                setTimeout(  () => {window.close()} , 1000)
+				document.cookie="lookerurl="+lookerurl + "; SameSite=Lax; Secure";
+                setTimeout(  () => {window.close()} , 500)
                 
             }
         }

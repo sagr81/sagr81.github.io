@@ -62,7 +62,7 @@
 				if(getQueryParam('url')) globalurl=getQueryParam('url');
 				if(getQueryParam('info')) infos=false;
 				if(getQueryParam('title')) document.title = getQueryParam('title');
-                iframe.src = getQueryParam('starturl') ? getQueryParam('starturl') : globalurl;
+                iframe.src = getQueryParam('starturl') ? getQueryParam('starturl') : globalurl +"x";
                 setInterval(wait_for_cookie_changes, 200);
             } else {
                 document.cookie="name="+nameValue + "; SameSite=Lax; Secure";

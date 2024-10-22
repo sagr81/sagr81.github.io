@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>hello world app V0.0.1</title>
+    <title>hello world app</title>
 </head>
 
 <body>
@@ -16,9 +16,6 @@
 
 
     <script>
-		var param={};
-		var globalurl="https://lookerstudio.google.com/embed/reporting/57a32da4-3d7c-43bf-a9a0-b87ec92f3741/page/";
-		var infos = true
         function getQueryParam(param) {
             "get key in html url"
             let urlParams = new URLSearchParams(window.location.search);
@@ -37,16 +34,13 @@
             return params;
         }
 
-        
+        var param={};
         function param_gen()/**generates a param key for looker studio*/{ 
             
             let p={};
-            const incl={
-				s:"include%EE%80%800%EE%80%80IN%EE%80%80",
-				i:"include%EE%80%801%EE%80%80IN%EE%80%80"
-				}
+            const incl="include%EE%80%800%EE%80%80IN%EE%80%80";
             for(let [key,val] of Object.entries(param))
-                p[key.substring(1,99)]=incl[key.substring(0,1)]+val;
+                p[key]=incl+val;
             let out=encodeURI(JSON.stringify(p))
             return out.length>6 ? '?params=' + out  : '';
         }
@@ -54,21 +48,16 @@
         window.onload = function () {
 
             let nameValue = getQueryParam('name');
-			let lookerurl = getQueryParam('lookerurl');
             let params = JSON.stringify(getQueryParams());
-            info.textContent = infos ? 'ref:' + document.referrer + ' name:' +  nameValue + ' params:' + params : '';
+            info.textContent = 'ref:' + document.referrer + ' name:' +  nameValue + ' params:' + params;
             if (nameValue === null) {
                 console.log(param_gen() )
-				if(getQueryParam('url')) globalurl=getQueryParam('url');
-				if(getQueryParam('info')) infos=false;
-				if(getQueryParam('title')) document.title = getQueryParam('title');
-                iframe.src = getQueryParam('starturl') ? getQueryParam('starturl') : globalurl;
-                setInterval(wait_for_cookie_changes, 200);
+                iframe.src = "https://lookerstudio.google.com/embed/reporting/57a32da4-3d7c-43bf-a9a0-b87ec92f3741/page/B8S6D"+param_gen()
+                setInterval(wait_for_cookie_changes, 500);
             } else {
                 document.cookie="name="+nameValue + "; SameSite=Lax; Secure";
                 document.cookie="params="+params + "; SameSite=Lax; Secure";
-				document.cookie="lookerurl="+lookerurl + "; SameSite=Lax; Secure";
-                setTimeout(  () => {window.close()} , 500)
+                setTimeout(  () => {window.close()} , 1000)
                 
             }
         }
@@ -77,16 +66,10 @@
  function wait_for_cookie_changes() {  
     const cookieValue = document.cookie.split("; ");
     console.log(cookieValue)   
-	const urlName = cookieValue.find((row) => row.startsWith("lookerurl="))?.split("=")[1];
-	document.cookie="lookerurl=; SameSite=Lax; Secure";
     const cookieName = cookieValue.find((row) => row.startsWith("name="))?.split("=")[1];
     const cookieParam = cookieValue.find((row) => row.startsWith("params="))?.split("=")[1];
-	if(urlName && urlName.length>5) {
-		if(infos) console.log('Set url', urlName)
-		globalurl=urlName;
-	}
     if(cookieName && cookieName.length>3) {
-        cookie.textContent= infos ? cookieName +' -- ' + cookieParam: '';
+        cookie.textContent=cookieName +' -- ' + cookieParam;
         for(let [key,val] of Object.entries(JSON.parse(cookieParam))){
             if(val=='*') { 
                 delete param[key];
@@ -94,10 +77,9 @@
                 param[key]=val;
             }
         }
-        iframe.src = globalurl+cookieName+param_gen()
+        iframe.src = "https://lookerstudio.google.com/embed/reporting/57a32da4-3d7c-43bf-a9a0-b87ec92f3741/page/"+cookieName+param_gen()
 
         document.cookie="name=; SameSite=Lax; Secure";
-		
 
     }
 
